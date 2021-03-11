@@ -1,0 +1,25 @@
+services:
+  web:
+    build: .
+    environment:
+      MYENV: EXAMPLE
+    volumes:
+      - ./apiFileUpload/:/code
+    restart: "always"
+  web_migrate:
+    extends:
+      service: web
+    command: python manage.py migrate
+    restart: "always"
+  web_run:
+    extends:
+      service: web
+    command: python manage.py runserver 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    restart: "always"
+  web_frente:
+    build: ./frontend
+    ports:
+      - "8080:80"
+    restart: "always"
